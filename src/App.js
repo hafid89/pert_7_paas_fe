@@ -11,7 +11,6 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Load notes on component mount
   useEffect(() => {
     loadNotes();
   }, []);
@@ -19,8 +18,10 @@ function App() {
   const loadNotes = async () => {
     try {
       setLoading(true);
-      const data = await noteService.getAllNotes();
-      setNotes(data);
+      const response = await noteService.getAllNotes();
+      // Perbaikan: ambil data dari response.data jika ada
+      const notesData = response?.data || response;
+      setNotes(Array.isArray(notesData) ? notesData : []);
       setError(null);
     } catch (err) {
       setError('Failed to load notes. Please check your connection.');
@@ -32,8 +33,10 @@ function App() {
 
   const handleCreateNote = async (note) => {
     try {
-      const newNote = await noteService.createNote(note);
-      setNotes([newNote, ...notes]);
+      const response = await noteService.createNote(note);
+      if (response?.success) {
+        await loadNotes();
+      }
     } catch (err) {
       alert('Failed to create note');
       console.error(err);
@@ -42,12 +45,14 @@ function App() {
 
   const handleUpdateNote = async (note) => {
     try {
-      const updatedNote = await noteService.updateNote(note.id, {
-        title: note.title,
-        content: note.content,
+      const response = await noteService.updateNote(note.id, {
+        judul: note.judul,
+        isi: note.isi,
       });
-      setNotes(notes.map(n => n.id === note.id ? updatedNote : n));
-      setEditingNote(null);
+      if (response?.success) {
+        await loadNotes();
+        setEditingNote(null);
+      }
     } catch (err) {
       alert('Failed to update note');
       console.error(err);
@@ -57,8 +62,10 @@ function App() {
   const handleDeleteNote = async (id) => {
     if (window.confirm('Are you sure you want to delete this note?')) {
       try {
-        await noteService.deleteNote(id);
-        setNotes(notes.filter(n => n.id !== id));
+        const response = await noteService.deleteNote(id);
+        if (response?.success) {
+          await loadNotes();
+        }
       } catch (err) {
         alert('Failed to delete note');
         console.error(err);
@@ -68,7 +75,6 @@ function App() {
 
   const handleEditNote = (note) => {
     setEditingNote(note);
-    // Scroll to form
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
