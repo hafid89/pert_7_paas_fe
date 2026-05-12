@@ -43,21 +43,26 @@ function App() {
     }
   };
 
-  const handleUpdateNote = async (note) => {
-    try {
-      const response = await noteService.updateNote(note.id, {
-        judul: note.judul,
-        isi: note.isi,
-      });
-      if (response?.success) {
-        await loadNotes();
-        setEditingNote(null);
-      }
-    } catch (err) {
-      alert('Failed to update note');
-      console.error(err);
+  
+  const handleUpdateNote = async (noteData) => {
+  try {
+    const { id, judul, isi } = noteData;
+    if (!id) {
+      alert('Note ID is missing!');
+      return;
     }
-  };
+    const response = await noteService.updateNote(id, { judul, isi });
+    if (response?.success) {
+      await loadNotes();
+      setEditingNote(null);
+    } else {
+      alert('Failed to update note');
+    }
+  } catch (err) {
+    alert('Failed to update note');
+    console.error(err);
+  }
+};
 
   const handleDeleteNote = async (id) => {
     if (window.confirm('Are you sure you want to delete this note?')) {

@@ -21,7 +21,12 @@ const NoteForm = ({ onSubmit, editingNote, setEditingNote }) => {
       alert('Please fill all fields');
       return;
     }
-    onSubmit({ judul, isi });
+    // PERBAIKAN: Kirim ID jika sedang edit
+    onSubmit({ 
+      id: editingNote?.id,  // ← INI KUNCI FIXNYA
+      judul, 
+      isi 
+    });
     setJudul('');
     setIsi('');
     if (setEditingNote) setEditingNote(null);
