@@ -1,0 +1,78 @@
+.note-card {
+  background: white;
+  border-radius: 10px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+  animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.note-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+}
+
+.note-title {
+  margin: 0 0 0.75rem 0;
+  color: #333;
+  font-size: 1.25rem;
+}
+
+.note-content {
+  color: #666;
+  line-height: 1.5;
+  margin: 0 0 1rem 0;
+}
+
+.note-date {
+  color: #999;
+  font-size: 0.875rem;
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.note-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.edit-btn,
+.delete-btn {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  transition: all 0.3s ease;
+}
+
+.edit-btn {
+  background: #2196f3;
+  color: white;
+}
+
+.edit-btn:hover {
+  background: #1976d2;
+  transform: translateY(-2px);
+}
+
+.delete-btn {
+  background: #f44336;
+  color: white;
+}
+
+.delete-btn:hover {
+  background: #da190b;
+  transform: translateY(-2px);
+}
